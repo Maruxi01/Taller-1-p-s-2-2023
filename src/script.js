@@ -4,6 +4,8 @@ import fs from "fs";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import filterByPrice from "./filter-by-price.js";
+import {createJSON} from "./utils.js";
+
 const argv = yargs(hideBin(process.argv)).argv;
 
 const city = argv.location || "temuco-la-araucania";
@@ -13,6 +15,10 @@ let page = 0;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/**
+ * Get houses from the web and save it in an array
+ * @returns {Number || Array }  - Number of pages or array of houses
+ */
 async function getHousesFromWeb() {
 	console.log(`Page ${page + 1} of ${MAX_pages}`);
 
@@ -79,17 +85,8 @@ getHousesFromWeb().then(async () => {
 			),
 		};
 	});
-
-	fs.writeFile(
-		`./json/${city}.json`,
-		JSON.stringify(housesWithPriceInCLP),
-		function (err) {
-			if (err) {
-				console.log(err);
-			}
-			console.log(`${city} JSON generated successfully`);
-		}
-	);
+	
+	createJSON(city, housesWithPriceInCLP);
 
 	if (argv.maximumPrice) {
 		filterByPrice({

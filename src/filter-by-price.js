@@ -1,36 +1,27 @@
-import XLSX from "xlsx";
-import fs from "fs";
-
+import { createJSON, createXLSX,convertPriceStringToNumber } from "./utils.js";
+/**
+ * Filter an array of houses by maximum price and city
+ * @param {Array} houses - Array of Houses to filter
+ * @param {Number} maximumPrice - Maximum price to filter
+ * @param {String} city - City to filter
+ *
+ */
 function filterByPrice({ houses, maximumPrice, city }) {
-	const filteredHouses = houses
-		.filter(
-			(house) =>
-				Number(house.priceInCLP.replace("$", "").replace(/\./g, "")) <
-				maximumPrice
-		)
-		.map((filterHouse) => {
-			return {
-				Location: filterHouse.location,
-				URL: filterHouse.url,
-			};
-		});
+  const filteredHouses = houses
+    .filter(
+      (house) =>
+	  convertPriceStringToNumber(house.priceInCLP) < maximumPrice
+	  )
+    .map((filterHouse) => {
+      return {
+        Location: filterHouse.location,
+        URL: filterHouse.url,
+      };
+    });
 
-	const workSheet = XLSX.utils.json_to_sheet(filteredHouses);
-	const workBook = XLSX.utils.book_new();
-	XLSX.utils.book_append_sheet(workBook, workSheet, "Houses");
-	XLSX.writeFile(workBook, `./xlsx/${city}.xlsx`);
-	console.log(`${city} XLSX File generated successfully`);
+  createXLSX(filteredHouses, city);
 
-	fs.writeFile(
-		`./json/${city}.json`,
-		JSON.stringify(filteredHouses),
-		function (err) {
-			if (err) {
-				console.log(err);
-			}
-			console.log(`${city} JSON generated successfully`);
-		}
-	);
+  createJSON(city, filteredHouses);
 }
 
 export default filterByPrice;
