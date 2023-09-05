@@ -21,15 +21,15 @@ export function createJSON(city, filteredHouses) {
 
 /**
  * Create a XLSX file with the filtered houses of a specific city
- * @param {Array} filteredHouses the houses filtered 
+ * @param {Array} filteredHouses the houses filtered
  * @param {String} city the specific city of the houses
  */
-export function createXLSX(filteredHouses, city){
+export function createXLSX(filteredHouses, city) {
   const workSheet = XLSX.utils.json_to_sheet(filteredHouses);
-	const workBook = XLSX.utils.book_new();
-	XLSX.utils.book_append_sheet(workBook, workSheet, "Houses");
-	XLSX.writeFile(workBook, `./xlsx/${city}.xlsx`);
-	console.log(`${city} XLSX File generated successfully`);
+  const workBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workBook, workSheet, "Houses");
+  XLSX.writeFile(workBook, `./xlsx/${city}.xlsx`);
+  console.log(`${city} XLSX File generated successfully`);
 }
 
 /**

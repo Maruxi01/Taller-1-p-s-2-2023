@@ -1,6 +1,5 @@
 import axios from "axios";
 import { load } from "cheerio";
-import fs from "fs";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import filterByPrice from "./filter-by-price.js";

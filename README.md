@@ -1,8 +1,8 @@
 # Taller 1 - Pruebas de software
 
 ## Members
-Esteban Llanos
-Mara Villagran
+1. Esteban Llanos 
+2. Mara Villagran
 
 ### Install libraries
 
